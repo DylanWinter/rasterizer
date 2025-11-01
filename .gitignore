@@ -1,0 +1,12 @@
+x64/
+Debug/
+Release/
+
+Rasterizer/x64
+
+build/
+build/*
+
+.vs
+.vscode
+.idea
