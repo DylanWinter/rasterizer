@@ -29,4 +29,5 @@ namespace Drawing
 	void DrawPixel(SDL_Renderer* Renderer, int x, int y, color4 Color);
 	void DrawPixel(SDL_Renderer* Renderer, ivec2 Position, color4 Color);
     void DrawLine(SDL_Renderer* Renderer, ivec2 Start, ivec2 End, color4 Color);
+    void DrawTriangle(SDL_Renderer* Renderer, ivec2 Point0, ivec2 Point1, ivec2 Point2, color4 Color, bool Filled = true);
 }

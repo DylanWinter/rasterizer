@@ -38,14 +38,15 @@ int main(int argc, char* argv[]) {
         
         // Rendering
         {
-            Drawing::DrawLine(Renderer, ivec2(100, 100), ivec2(0, 0), Colors::White);
-            Drawing::DrawLine(Renderer, ivec2(0, 100), ivec2(100, 0), Colors::Red);
-            Drawing::DrawLine(Renderer, ivec2(200, 50), ivec2(10, 50), Colors::Green);
-            Drawing::DrawLine(Renderer, ivec2(50, 60), ivec2(200, 60), Colors::Blue);
-            Drawing::DrawLine(Renderer, ivec2(150, 120), ivec2(150, 10), Colors::Yellow);
-            Drawing::DrawLine(Renderer, ivec2(160, 20), ivec2(160, 120), Colors::Magenta);
-            Drawing::DrawLine(Renderer, ivec2(180, 80), ivec2(20, 30), Colors::Cyan);
-            Drawing::DrawLine(Renderer, ivec2(80, 200), ivec2(50, 20), Colors::Orange);
+            Drawing::DrawTriangle(Renderer, ivec2(100, 50), ivec2(150, 200), ivec2(50, 200), Colors::Red);
+            Drawing::DrawTriangle(Renderer, ivec2(20, 20), ivec2(40, 60), ivec2(10, 50), Colors::Blue);
+            Drawing::DrawTriangle(Renderer, ivec2(200, 50), ivec2(220, 180), ivec2(180, 180), Colors::Yellow);
+            Drawing::DrawTriangle(Renderer, ivec2(50, 150), ivec2(250, 150), ivec2(150, 100), Colors::Cyan);
+            Drawing::DrawTriangle(Renderer, ivec2(300, 50), ivec2(250, 200), ivec2(350, 200), Colors::Magenta);
+            Drawing::DrawTriangle(Renderer, ivec2(400, 100), ivec2(500, 50), ivec2(500, 150), Colors::Orange);
+            Drawing::DrawTriangle(Renderer, ivec2(600, 100), ivec2(500, 50), ivec2(500, 150), Colors::Green);
+            Drawing::DrawTriangle(Renderer, ivec2(10, 10), ivec2(15, 15), ivec2(5, 20), Colors::White);
+            Drawing::DrawTriangle(Renderer, ivec2(0, 590), ivec2(400, 590), ivec2(200, 150), Colors::Purple);
         }
 
         auto StopTime = std::chrono::high_resolution_clock::now();
