@@ -27,6 +27,6 @@ namespace Drawing
     constexpr int ViewportDistanceFromCamera = 1;
 
 	void DrawPixel(SDL_Renderer* Renderer, int x, int y, color4 Color);
-
-    vec3 CanvasToViewport(ivec2 CanvasPos);
+	void DrawPixel(SDL_Renderer* Renderer, ivec2 Position, color4 Color);
+    void DrawLine(SDL_Renderer* Renderer, ivec2 Start, ivec2 End, color4 Color);
 }

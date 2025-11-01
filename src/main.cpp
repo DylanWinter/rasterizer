@@ -37,13 +37,15 @@ int main(int argc, char* argv[]) {
         auto StartTime = std::chrono::high_resolution_clock::now();
         
         // Rendering
-        #pragma omp for
-        for (int x = -Drawing::ResX / 2; x < Drawing::ResX / 2; x++) 
         {
-            for (int y = -Drawing::ResY / 2; y < Drawing::ResY / 2; y++) 
-            {
-
-            }
+            Drawing::DrawLine(Renderer, ivec2(100, 100), ivec2(0, 0), Colors::White);
+            Drawing::DrawLine(Renderer, ivec2(0, 100), ivec2(100, 0), Colors::Red);
+            Drawing::DrawLine(Renderer, ivec2(200, 50), ivec2(10, 50), Colors::Green);
+            Drawing::DrawLine(Renderer, ivec2(50, 60), ivec2(200, 60), Colors::Blue);
+            Drawing::DrawLine(Renderer, ivec2(150, 120), ivec2(150, 10), Colors::Yellow);
+            Drawing::DrawLine(Renderer, ivec2(160, 20), ivec2(160, 120), Colors::Magenta);
+            Drawing::DrawLine(Renderer, ivec2(180, 80), ivec2(20, 30), Colors::Cyan);
+            Drawing::DrawLine(Renderer, ivec2(80, 200), ivec2(50, 20), Colors::Orange);
         }
 
         auto StopTime = std::chrono::high_resolution_clock::now();
