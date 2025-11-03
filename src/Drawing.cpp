@@ -13,6 +13,7 @@ namespace
 			return std::vector<float>{d0};
 
 		std::vector<float> Values{};
+		Values.reserve(i1 - i0 + 1);
 		float a = (d1 - d0) / (i1 - i0);
 		float d = d0;
 		for (int i = i0; i <= i1; i++)
@@ -82,40 +83,55 @@ namespace Drawing
 		}
 	}
 
-	void DrawTriangle(SDL_Renderer* Renderer, ivec2 Point0, ivec2 Point1, ivec2 Point2, color4 Color, bool Filled)
+	void DrawTriangle(SDL_Renderer* Renderer, Vertex Point0, Vertex Point1, Vertex Point2, color4 Color, bool Filled)
 	{
 		if (!Filled)
 		{
-			DrawLine(Renderer, Point0, Point1, Color);
-			DrawLine(Renderer, Point1, Point2, Color);
-			DrawLine(Renderer, Point2, Point0, Color);
+			DrawLine(Renderer, Point0.Position, Point1.Position, Color);
+			DrawLine(Renderer, Point1.Position, Point2.Position, Color);
+			DrawLine(Renderer, Point2.Position, Point0.Position, Color);
 			return;
 		}
 
 		// Sort points in descending order of y
-		if (Point0.y > Point1.y)
+		if (Point0.Position.y > Point1.Position.y)
 			std::swap(Point0, Point1);
-		if (Point0.y > Point2.y)
+		if (Point0.Position.y > Point2.Position.y)
 			std::swap(Point0, Point2);
-		if (Point1.y > Point2.y)
+		if (Point1.Position.y > Point2.Position.y)
 			std::swap(Point1, Point2);
 
-		// Compute x values
-		auto X01Vals = Interpolate(Point0.y, Point0.x, Point1.y, Point1.x);
-		auto X12Vals = Interpolate(Point1.y, Point1.x, Point2.y, Point2.x);
-		auto X02Vals = Interpolate(Point0.y, Point0.x, Point2.y, Point2.x);
+		// Compute x values and intensities per edge
+		auto Edge01Xs = Interpolate(Point0.Position.y, Point0.Position.x, Point1.Position.y, Point1.Position.x);
+		auto Edge01Intensities = Interpolate(Point0.Position.y, Point0.Intensity, Point1.Position.y, Point1.Intensity);
+		auto Edge12Xs = Interpolate(Point1.Position.y, Point1.Position.x, Point2.Position.y, Point2.Position.x);
+		auto Edge12Intensities = Interpolate(Point1.Position.y, Point1.Intensity, Point2.Position.y, Point2.Intensity);
+		auto Edge02Xs = Interpolate(Point0.Position.y, Point0.Position.x, Point2.Position.y, Point2.Position.x);
+		auto Edge02Intensities = Interpolate(Point0.Position.y, Point0.Intensity, Point2.Position.y, Point2.Intensity);
 		// Concatenate two sides
-		X01Vals.pop_back();
-		X01Vals.insert(X01Vals.end(), X12Vals.begin(), X12Vals.end());
-		auto& X012Vals = X01Vals;
+		Edge01Xs.pop_back();
+		Edge01Intensities.pop_back();
+		Edge01Xs.insert(Edge01Xs.end(), Edge12Xs.begin(), Edge12Xs.end());
+		Edge01Intensities.insert(Edge01Intensities.end(), Edge12Intensities.begin(), Edge12Intensities.end());
+		auto& X012Vals = Edge01Xs;
+		auto& Intensity012Vals = Edge01Intensities;
 
 		// Determine which side is left vs. right
 		int Middle = std::floor(X012Vals.size() / 2);
-		auto& XLeft = (X02Vals[Middle] < X012Vals[Middle]) ? X02Vals : X012Vals;
-		auto& XRight = (X02Vals[Middle] < X012Vals[Middle]) ? X012Vals : X02Vals;
+		auto& XLeft = (Edge02Xs[Middle] < X012Vals[Middle]) ? Edge02Xs : X012Vals;
+		auto& IntensityLeft = (Edge02Xs[Middle] < X012Vals[Middle]) ? Edge02Intensities : Intensity012Vals;
+		auto& XRight = (Edge02Xs[Middle] < X012Vals[Middle]) ? X012Vals : Edge02Xs;
+		auto& IntensityRight = (Edge02Xs[Middle] < X012Vals[Middle]) ? Intensity012Vals : Edge02Intensities;
 
-		for (int y = Point0.y; y <= Point2.y; y++)
-			for (int x = XLeft[y - Point0.y]; x <= XRight[y - Point0.y]; x++)
-				DrawPixel(Renderer, x, y, Color);
+		for (int y = Point0.Position.y; y <= Point2.Position.y; y++)
+		{
+			// Compute intensities along the row
+			int X_L = XLeft[y - Point0.Position.y];
+			int X_R = XRight[y - Point0.Position.y];
+			auto IntensitiesHorizontal = Interpolate(X_L, IntensityLeft[y - Point0.Position.y], 
+												     X_R, IntensityRight[y - Point0.Position.y]);
+			for (int x = X_L; x <= X_R; x++)
+				DrawPixel(Renderer, x, y, Color * IntensitiesHorizontal[x - X_L]);
+		}
 	}
 }

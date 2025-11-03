@@ -38,15 +38,16 @@ int main(int argc, char* argv[]) {
         
         // Rendering
         {
-            Drawing::DrawTriangle(Renderer, ivec2(100, 50), ivec2(150, 200), ivec2(50, 200), Colors::Red);
-            Drawing::DrawTriangle(Renderer, ivec2(20, 20), ivec2(40, 60), ivec2(10, 50), Colors::Blue);
-            Drawing::DrawTriangle(Renderer, ivec2(200, 50), ivec2(220, 180), ivec2(180, 180), Colors::Yellow);
-            Drawing::DrawTriangle(Renderer, ivec2(50, 150), ivec2(250, 150), ivec2(150, 100), Colors::Cyan);
-            Drawing::DrawTriangle(Renderer, ivec2(300, 50), ivec2(250, 200), ivec2(350, 200), Colors::Magenta);
-            Drawing::DrawTriangle(Renderer, ivec2(400, 100), ivec2(500, 50), ivec2(500, 150), Colors::Orange);
-            Drawing::DrawTriangle(Renderer, ivec2(600, 100), ivec2(500, 50), ivec2(500, 150), Colors::Green);
-            Drawing::DrawTriangle(Renderer, ivec2(10, 10), ivec2(15, 15), ivec2(5, 20), Colors::White);
-            Drawing::DrawTriangle(Renderer, ivec2(0, 590), ivec2(400, 590), ivec2(200, 150), Colors::Purple);
+            Drawing::DrawTriangle(Renderer, Vertex({ 100, 50 }, 1.0f), Vertex({ 150, 200 }, 0.6f), Vertex({ 50, 200 }, 0.0f), Colors::Red);
+            Drawing::DrawTriangle(Renderer, Vertex({ 20, 20 }, 1.0f), Vertex({ 40, 60 }, 0.5f), Vertex({ 10, 50 }, 0.2f), Colors::Blue);
+            Drawing::DrawTriangle(Renderer, Vertex({ 200, 50 }, 1.0f), Vertex({ 220, 180 }, 0.7f), Vertex({ 180, 180 }, 0.4f), Colors::Yellow);
+            Drawing::DrawTriangle(Renderer, Vertex({ 50, 150 }, 0.9f), Vertex({ 250, 150 }, 0.5f), Vertex({ 150, 300 }, 0.1f), Colors::Cyan);
+            Drawing::DrawTriangle(Renderer, Vertex({ 300, 50 }, 1.0f), Vertex({ 250, 200 }, 0.6f), Vertex({ 350, 200 }, 0.3f), Colors::Magenta);
+            Drawing::DrawTriangle(Renderer, Vertex({ 400, 100 }, 1.0f), Vertex({ 500, 50 }, 0.5f), Vertex({ 500, 150 }, 0.2f), Colors::Orange);
+            Drawing::DrawTriangle(Renderer, Vertex({ 600, 100 }, 1.0f), Vertex({ 500, 50 }, 0.5f), Vertex({ 500, 150 }, 0.2f), Colors::Green);
+            Drawing::DrawTriangle(Renderer, Vertex({ 10, 10 }, 1.0f), Vertex({ 15, 15 }, 0.5f), Vertex({ 5, 20 }, 0.2f), Colors::White);
+            Drawing::DrawTriangle(Renderer, Vertex({ 0, 590 }, 1.0f), Vertex({ 400, 590 }, 0.7f), Vertex({ 200, 150 }, 0.3f), Colors::Purple);
+
         }
 
         auto StopTime = std::chrono::high_resolution_clock::now();

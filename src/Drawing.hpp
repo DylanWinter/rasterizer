@@ -2,7 +2,8 @@
 #include <SDL3/SDL.h>
 #include "Vec.hpp"
 
-namespace Colors {
+namespace Colors 
+{
     inline const vec4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
     inline const vec4 Black = { 0.0f, 0.0f, 0.0f, 1.0f };
     inline const vec4 Red = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -17,6 +18,17 @@ namespace Colors {
     inline const vec4 Brown = { 0.647f, 0.165f, 0.165f, 1.0f }; 
 }
 
+struct Vertex
+{
+    ivec2 Position;
+    float Intensity = 1.0;
+
+    Vertex(const ivec2& Position, float intensity = 1.0f)
+        : Position(Position), Intensity(intensity)
+    {
+    }
+};
+
 namespace Drawing 
 {
 	constexpr int ResX = 640;
@@ -29,5 +41,5 @@ namespace Drawing
 	void DrawPixel(SDL_Renderer* Renderer, int x, int y, color4 Color);
 	void DrawPixel(SDL_Renderer* Renderer, ivec2 Position, color4 Color);
     void DrawLine(SDL_Renderer* Renderer, ivec2 Start, ivec2 End, color4 Color);
-    void DrawTriangle(SDL_Renderer* Renderer, ivec2 Point0, ivec2 Point1, ivec2 Point2, color4 Color, bool Filled = true);
+    void DrawTriangle(SDL_Renderer* Renderer, Vertex Point0, Vertex Point1, Vertex Point2, color4 Color, bool Filled = true);
 }
