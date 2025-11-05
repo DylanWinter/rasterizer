@@ -27,8 +27,16 @@ namespace
 
 namespace Drawing 
 {
+	// Project a 3D position in the world to a 2D screen space position
+	ivec2 WorldPositionToCanvas(const vec3& Pos)
+	{
+		float ViewportX = Pos.x * ViewportDistanceFromCamera / Pos.z;
+		float ViewportY = Pos.y * ViewportDistanceFromCamera / Pos.z;
+		return ivec2((ViewportX * ResX / ViewportWidth) + (ResX / 2), (ViewportY * ResY / ViewportHeight) + (ResY / 2));
+	}
+
 	// Draws a single pixel on screen
-	void DrawPixel(SDL_Renderer* Renderer, int x, int y, color4 Color) 
+	void DrawPixel(int x, int y, color4 Color) 
 	{
 		if (x > ResX || y > ResY)
 		{
@@ -44,17 +52,17 @@ namespace Drawing
 	}
 
 	// Wrapper to allow passing in an ivec2 instead of separate x and y 
-	void DrawPixel(SDL_Renderer* Renderer, ivec2 Position, color4 Color)
+	void DrawPixel(ivec2 Position, color4 Color)
 	{
-		DrawPixel(Renderer, Position.x, Position.y, Color);
+		DrawPixel(Position.x, Position.y, Color);
 	}
 
 	// Draws a line of pixels from Start to End
-	void DrawLine(SDL_Renderer* Renderer, ivec2 Start, ivec2 End, color4 Color)
+	void DrawLine(ivec2 Start, ivec2 End, color4 Color)
 	{
 		if (Start == End)
 		{
-			DrawPixel(Renderer, Start, Color);
+			DrawPixel(Start, Color);
 			return;
 		}
 		// More horizontal than vertical
@@ -67,7 +75,7 @@ namespace Drawing
 			auto YValues = Interpolate(Start.x, Start.y, End.x, End.y);
 
 			for (int x = Start.x; x <= End.x; x++)
-				DrawPixel(Renderer, x, std::round<int>(YValues[x - Start.x]), Color);
+				DrawPixel(x, std::round<int>(YValues[x - Start.x]), Color);
 		}
 		// More vertical than horizontal
 		else
@@ -79,17 +87,17 @@ namespace Drawing
 			auto XValues = Interpolate(Start.y, Start.x, End.y, End.x);
 
 			for (int y = Start.y; y <= End.y; y++)
-				DrawPixel(Renderer, std::round<int>(XValues[y - Start.y]), y, Color);
+				DrawPixel(std::round<int>(XValues[y - Start.y]), y, Color);
 		}
 	}
 
-	void DrawTriangle(SDL_Renderer* Renderer, Vertex Point0, Vertex Point1, Vertex Point2, color4 Color, bool Filled)
+	void DrawTriangle(Vertex2D Point0, Vertex2D Point1, Vertex2D Point2, const color4& Color, bool Filled)
 	{
 		if (!Filled)
 		{
-			DrawLine(Renderer, Point0.Position, Point1.Position, Color);
-			DrawLine(Renderer, Point1.Position, Point2.Position, Color);
-			DrawLine(Renderer, Point2.Position, Point0.Position, Color);
+			DrawLine(Point0.Position, Point1.Position, Color);
+			DrawLine(Point1.Position, Point2.Position, Color);
+			DrawLine(Point2.Position, Point0.Position, Color);
 			return;
 		}
 
@@ -131,7 +139,7 @@ namespace Drawing
 			auto IntensitiesHorizontal = Interpolate(X_L, IntensityLeft[y - Point0.Position.y], 
 												     X_R, IntensityRight[y - Point0.Position.y]);
 			for (int x = X_L; x <= X_R; x++)
-				DrawPixel(Renderer, x, y, Color * IntensitiesHorizontal[x - X_L]);
+				DrawPixel(x, y, Color * IntensitiesHorizontal[x - X_L]);
 		}
 	}
 }

@@ -18,19 +18,20 @@ namespace Colors
     inline const vec4 Brown = { 0.647f, 0.165f, 0.165f, 1.0f }; 
 }
 
-struct Vertex
+struct Vertex2D
 {
     ivec2 Position;
     float Intensity = 1.0;
 
-    Vertex(const ivec2& Position, float intensity = 1.0f)
+    Vertex2D(const ivec2& Position, float intensity = 1.0f)
         : Position(Position), Intensity(intensity)
-    {
-    }
+    {}
 };
 
 namespace Drawing 
 {
+    inline SDL_Renderer* Renderer = nullptr;
+
 	constexpr int ResX = 640;
 	constexpr int ResY = 640;
 
@@ -38,8 +39,10 @@ namespace Drawing
     constexpr int ViewportHeight = 1;
     constexpr int ViewportDistanceFromCamera = 1;
 
-	void DrawPixel(SDL_Renderer* Renderer, int x, int y, color4 Color);
-	void DrawPixel(SDL_Renderer* Renderer, ivec2 Position, color4 Color);
-    void DrawLine(SDL_Renderer* Renderer, ivec2 Start, ivec2 End, color4 Color);
-    void DrawTriangle(SDL_Renderer* Renderer, Vertex Point0, Vertex Point1, Vertex Point2, color4 Color, bool Filled = true);
+    ivec2 WorldPositionToCanvas(const vec3& Pos);
+
+	void DrawPixel(int x, int y, color4 Color);
+	void DrawPixel(ivec2 Position, color4 Color);
+    void DrawLine(ivec2 Start, ivec2 End, color4 Color);
+    void DrawTriangle(Vertex2D Point0, Vertex2D Point1, Vertex2D Point2, const color4& Color, bool Filled = true);
 }
