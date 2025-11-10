@@ -2,6 +2,9 @@
 #include <SDL3/SDL.h>
 #include "Vec.hpp"
 
+constexpr int RES_X = 640;
+constexpr int RES_Y = 640;
+
 namespace Colors 
 {
     inline const vec4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -31,15 +34,6 @@ struct Vertex2D
 namespace Drawing 
 {
     inline SDL_Renderer* Renderer = nullptr;
-
-	constexpr int ResX = 640;
-	constexpr int ResY = 640;
-
-    constexpr int ViewportWidth = 1;
-    constexpr int ViewportHeight = 1;
-    constexpr int ViewportDistanceFromCamera = 1;
-
-    ivec2 WorldPositionToCanvas(const vec3& Pos);
 
 	void DrawPixel(int x, int y, color4 Color);
 	void DrawPixel(ivec2 Position, color4 Color);

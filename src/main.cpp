@@ -6,6 +6,7 @@
 
 #include "Drawing.hpp"
 #include "Rendering.hpp"
+#include "Scene.hpp"
 
 int main(int argc, char* argv[]) {
     // SDL Setup
@@ -14,7 +15,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     SDL_Window* Window = SDL_CreateWindow(
-        "Rasterizer", Drawing::ResX, Drawing::ResY, SDL_WINDOW_RESIZABLE);
+        "Rasterizer", RES_X, RES_Y, SDL_WINDOW_RESIZABLE);
     if (!Window) {
         std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << "\n";
         SDL_Quit();
@@ -22,6 +23,38 @@ int main(int argc, char* argv[]) {
     }
     Drawing::Renderer = SDL_CreateRenderer(Window, nullptr);
     SDL_SetRenderDrawColor(Drawing::Renderer, 0, 0, 0, 255);
+
+    Scene Scene{};
+    MeshData Cube;
+    Cube.Color = Colors::Red;
+    Cube.Vertices = {
+        Vertex({ -1.0f, -1.0f, 5.0f }),  
+        Vertex({ -1.0f,  1.0f, 5.0f }),  
+        Vertex({  1.0f,  1.0f, 5.0f }), 
+        Vertex({  1.0f, -1.0f, 5.0f }), 
+        Vertex({ -1.0f, -1.0f, 6.0f }),  
+        Vertex({ -1.0f,  1.0f, 6.0f }),  
+        Vertex({  1.0f,  1.0f, 6.0f }),  
+        Vertex({  1.0f, -1.0f, 6.0f })   
+    };
+    Cube.Indices = {
+        4, 5, 6,
+        4, 6, 7,
+        0, 2, 1,
+        0, 3, 2,
+        0, 4, 5,
+        0, 5, 1,
+        3, 2, 6,
+        3, 6, 7,
+        1, 5, 6,
+        1, 6, 2,
+        0, 3, 7,
+        0, 7, 4
+    };
+
+    MeshInstance Instance = MeshInstance(Cube);
+    Instance.Position = vec3(2, 2, 2);
+    Scene.Meshes.push_back(Instance);
 
     // Main loop
     bool Running = true;
@@ -36,30 +69,11 @@ int main(int argc, char* argv[]) {
         SDL_RenderClear(Drawing::Renderer);
 
         auto StartTime = std::chrono::high_resolution_clock::now();
-        
-        Vertex vAf({ -1.0f, -1.0f, 5.0f }, 1.0f); 
-        Vertex vBf({ -1.0f,  1.0f, 5.0f }, 1.0f); 
-        Vertex vCf({ 1.0f,  1.0f, 5.0f }, 1.0f); 
-        Vertex vDf({ 1.0f, -1.0f, 5.0f }, 1.0f); 
-        Vertex vAb({ -1.0f, -1.0f, 6.0f }, 1.0f); 
-        Vertex vBb({ -1.0f,  1.0f, 6.0f }, 1.0f); 
-        Vertex vCb({ 1.0f,  1.0f, 6.0f }, 1.0f); 
-        Vertex vDb({ 1.0f, -1.0f, 6.0f }, 1.0f); 
 
         // Rendering
         {
-            Rendering::RenderTriangle(vAb, vBb, vCb, Colors::Red);
-            Rendering::RenderTriangle(vAb, vCb, vDb, Colors::Red);
-            Rendering::RenderTriangle(vAf, vBf, vCf, Colors::Blue);
-            Rendering::RenderTriangle(vAf, vCf, vDf, Colors::Blue);
-            Rendering::RenderTriangle(vAf, vAb, vBb, Colors::Green);
-            Rendering::RenderTriangle(vAf, vBb, vBf, Colors::Green);
-            Rendering::RenderTriangle(vDf, vCf, vCb, Colors::Yellow);
-            Rendering::RenderTriangle(vDf, vCb, vDb, Colors::Yellow);
-            Rendering::RenderTriangle(vBf, vBb, vCb, Colors::Cyan);
-            Rendering::RenderTriangle(vBf, vCb, vCf, Colors::Cyan);
-            Rendering::RenderTriangle(vAf, vDf, vDb, Colors::Magenta);
-            Rendering::RenderTriangle(vAf, vDb, vAb, Colors::Magenta);
+            for (auto& Mesh : Scene.Meshes)
+                Rendering::RenderMesh(Mesh);
         }
 
         auto StopTime = std::chrono::high_resolution_clock::now();

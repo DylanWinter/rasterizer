@@ -27,18 +27,10 @@ namespace
 
 namespace Drawing 
 {
-	// Project a 3D position in the world to a 2D screen space position
-	ivec2 WorldPositionToCanvas(const vec3& Pos)
-	{
-		float ViewportX = Pos.x * ViewportDistanceFromCamera / Pos.z;
-		float ViewportY = Pos.y * ViewportDistanceFromCamera / Pos.z;
-		return ivec2((ViewportX * ResX / ViewportWidth) + (ResX / 2), (ViewportY * ResY / ViewportHeight) + (ResY / 2));
-	}
-
 	// Draws a single pixel on screen
 	void DrawPixel(int x, int y, color4 Color) 
 	{
-		if (x > ResX || y > ResY)
+		if (x > RES_X || y > RES_Y)
 		{
 			return;
 		}
