@@ -23,11 +23,11 @@ namespace Rendering
         std::vector<Vertex2D> Projected = {};
         for (auto& Vertex : Instance.Mesh.Vertices)
         {
-            const vec3 TransformedVertex = Vertex.Position + Instance.Position;
+            const vec3 TransformedVertex = ApplyRotation(ApplyScale(Vertex.Position, Instance.Transform.Scale), Instance.Transform.Rotation) + Instance.Transform.Position;
             Projected.push_back(Vertex2D(WorldPositionToCanvas(TransformedVertex), Vertex.Intensity));
         }
 
         for (int i = 0; i < Instance.Mesh.Indices.size(); i += 3)
-            Drawing::DrawTriangle(Projected[Instance.Mesh.Indices[i]], Projected[Instance.Mesh.Indices[i + 1]], Projected[Instance.Mesh.Indices[i + 2]], Instance.Mesh.Color, false);
+            Drawing::DrawTriangle(Projected[Instance.Mesh.Indices[i]], Projected[Instance.Mesh.Indices[i + 1]], Projected[Instance.Mesh.Indices[i + 2]], Instance.Color, false);
     }
 }

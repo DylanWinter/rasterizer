@@ -26,16 +26,15 @@ int main(int argc, char* argv[]) {
 
     Scene Scene{};
     MeshData Cube;
-    Cube.Color = Colors::Red;
     Cube.Vertices = {
-        Vertex({ -1.0f, -1.0f, 5.0f }),  
-        Vertex({ -1.0f,  1.0f, 5.0f }),  
-        Vertex({  1.0f,  1.0f, 5.0f }), 
-        Vertex({  1.0f, -1.0f, 5.0f }), 
-        Vertex({ -1.0f, -1.0f, 6.0f }),  
-        Vertex({ -1.0f,  1.0f, 6.0f }),  
-        Vertex({  1.0f,  1.0f, 6.0f }),  
-        Vertex({  1.0f, -1.0f, 6.0f })   
+        Vertex({ -0.5f, -0.5f, -0.5f }),
+        Vertex({ -0.5f,  0.5f, -0.5f }),
+        Vertex({  0.5f,  0.5f, -0.5f }),
+        Vertex({  0.5f, -0.5f, -0.5f }),
+        Vertex({ -0.5f, -0.5f,  0.5f }),
+        Vertex({ -0.5f,  0.5f,  0.5f }),
+        Vertex({  0.5f,  0.5f,  0.5f }),
+        Vertex({  0.5f, -0.5f,  0.5f })
     };
     Cube.Indices = {
         4, 5, 6,
@@ -53,8 +52,15 @@ int main(int argc, char* argv[]) {
     };
 
     MeshInstance Instance = MeshInstance(Cube);
-    Instance.Position = vec3(2, 2, 2);
+    Instance.Transform.Position = vec3(2, 1, 7);
+    Instance.Transform.Rotation = vec3(0.0f, DegToRad(45.0f), 0.0f);
     Scene.Meshes.push_back(Instance);
+
+    MeshInstance Instance2 = MeshInstance(Cube);
+    Instance2.Transform.Position = vec3(-2, 1, 7);
+    Instance2.Transform.Rotation = vec3(0.0f, DegToRad(-45.0f), 0.0f);
+    Instance2.Color = Colors::Blue;
+    Scene.Meshes.push_back(Instance2);
 
     // Main loop
     bool Running = true;

@@ -14,19 +14,28 @@ struct Vertex
 
 struct MeshData
 {
-    color4 Color = Colors::Red;
     std::vector<Vertex> Vertices;
     std::vector<int> Indices;  // must be a multiple of 3
 };
 
+struct Transform
+{
+    vec3 Position = vec3(0, 0, 0);
+    vec3 Rotation = vec3(0, 0, 0);
+    vec3 Scale = vec3(1, 1, 1);
+};
+
 struct MeshInstance
 {
+    color4 Color = Colors::Red;
     const MeshData& Mesh;
-    vec3 Position = vec3(0, 0, 0);
+    Transform Transform;
 
-    MeshInstance(const MeshData& Mesh, const vec3& Position = vec3(0, 0, 0))
-        : Mesh(Mesh), Position(Position)
-    {}
+    MeshInstance(const MeshData& Mesh, const vec3& Position = vec3(0, 0, 0), const vec3& Rotation = vec3(0, 0, 0), const vec3& Scale = vec3(1, 1, 1))
+        : Mesh(Mesh)
+    {
+        Transform = { Position, Rotation, Scale };
+    }
 };
 
 struct Scene

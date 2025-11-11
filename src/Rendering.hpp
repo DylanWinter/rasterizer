@@ -1,6 +1,7 @@
 #pragma once
 #include "Drawing.hpp"
 #include "Scene.hpp"
+#include "Util.hpp"
 
 namespace Rendering 
 {
